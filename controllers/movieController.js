@@ -10,6 +10,8 @@ const getMovies = async (req, res) => { // Lay danh sach tat ca phim
 }
 
 const updateMovie = async (req, res) => { // Cap nhat thong tin Film
+    if (req.user.role !== 'admin') 
+        return res.status(403).json({ message: 'You are not authorized to perform this action'})
     try {
         const movieId = req.params.id 
         const updateMovie = await Movie.findByIdAndUpdate(movieId, req.body, {new: true})
@@ -22,6 +24,8 @@ const updateMovie = async (req, res) => { // Cap nhat thong tin Film
 }
 
 const deleteMovie = async (req, res) => { // Xoa phim
+    if (req.user.role !== 'admin') 
+        return res.status(403).json({ message: 'You are not authorized to perform this action'})
     try {
         const movieId = req.params.id
         const deleteMovie = await Movie.findOneAndDelete(movieId)
@@ -34,6 +38,8 @@ const deleteMovie = async (req, res) => { // Xoa phim
 }
 
 const addMovie = async (req, res) => {
+    if (req.user.role !== 'admin') 
+        return res.status(403).json({ message: 'You are not authorized to perform this action'})
     try {
         const { title, description, releaseYear, genre, duration, poster, trailer } = req.body
         const newMovie = new Movie({ title, description, releaseYear, genre, duration, poster, trailer })
